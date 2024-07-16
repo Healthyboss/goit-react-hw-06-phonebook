@@ -1,11 +1,15 @@
+import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import styles from "./ContactForm.module.css"
 
-const ContactForm = ({name, setName, number, setNumber, addContact}) =>{
-   const handleSubmit = (event) => {
+const ContactForm = ({onAddContact}) =>{
+    const[name, setName] = useState('');
+    const[number, setNumber] = useState('');
+
+    const handleSubmit = (event) => {
     event.preventDefault();
     if (name.trim() && number.trim()) {
-        addContact(name, number);
+        onAddContact(name, number);
         setName('');
         setNumber('');
     }
