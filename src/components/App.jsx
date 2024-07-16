@@ -44,7 +44,7 @@ const App = () => {
     dispatch(setFilter(event.target.value));
   }
 
-  const filteredContacts =() =>{
+  const filteredContacts = () => {
     const normalizeFilter = filter.toLowerCase();
     return contacts.filter(contact => 
       contact.name.toLowerCase().includes(normalizeFilter)

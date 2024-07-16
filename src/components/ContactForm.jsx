@@ -49,10 +49,10 @@ const ContactForm = ({onAddContact}) =>{
 }
 
 ContactForm.propTypes ={
-    name: PropTypes.string.isRequired,
-    setName: PropTypes.func.isRequired,
-    number: PropTypes.string.isRequired,
-    setNumber: PropTypes.func.isRequired,
-    addContact: PropTypes.func.isRequired,
+    name: PropTypes.string,
+    setName: PropTypes.func,
+    number: PropTypes.string,
+    setNumber: PropTypes.func,
+    addContact: PropTypes.func,
 }
 export default ContactForm;
