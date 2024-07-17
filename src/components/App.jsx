@@ -39,7 +39,9 @@ const App = () => {
   const handleAddContact = (name, number) => {
     const normalizedName = name.toLowerCase();
     const existingName = contacts.filter(
-      (contact) => contact.name.toLowerCase() === normalizedName
+      (contact) => 
+        typeof contact.name === "string" &&  
+        contact.name.toLowerCase() === normalizedName
     );
     if (existingName.length > 0) {
       alert(`${name} is already on the Contacts list !`)
@@ -62,11 +64,11 @@ const App = () => {
       typeof contact.name === "string" &&
       contact.name.toLowerCase().includes(normalizeFilter)
     );
-  }
+  };
 
   const handleDeletedContact =(id) =>{
     dispatch(removeContact(id));
-  }
+  };
   
 
   return (
