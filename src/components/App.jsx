@@ -10,20 +10,30 @@ import Filter from "./Filter";
 const App = () => {
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contact);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector((state) => state.contact);
+  const filter = useSelector((state) => state.filter);
 
 
   useEffect(() => {
     const localStorageContacts = localStorage.getItem("contacts");
-    if (localStorageContacts) {
-      const parsedContacts = JSON.parse(localStorageContacts);
-      dispatch(setContacts(parsedContacts));
+    if (localStorageContacts && localStorageContacts!== "undefined") {
+      try {
+        const parsedContacts = JSON.parse(localStorageContacts);
+        if (Array.isArray(parsedContacts)) {
+          dispatch(setContacts(parsedContacts));
+        } else {
+          console.error("Dane w localStorage nie są tablicą.");
+        }
+      } catch (error) {
+        console.error("Błąd parsowania danych z localStorage: ", error);
+      }
     }
   }, [dispatch]);
 
   useEffect(()=>{
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    if (contacts) {
+       localStorage.setItem('contacts', JSON.stringify(contacts));
+      }
     },[contacts]);
   
   const handleAddContact = (name, number) => {
@@ -36,7 +46,7 @@ const App = () => {
       return;
     }
 
-    dispatch(addContact({name,number}));
+    dispatch(addContact(name,number));
 
   };  
 
@@ -45,8 +55,11 @@ const App = () => {
   }
 
   const filteredContacts = () => {
+    if (!contacts) return [];
     const normalizeFilter = filter.toLowerCase();
-    return contacts.filter(contact => 
+    return contacts.filter(
+      (contact) => 
+      typeof contact.name === "string" &&
       contact.name.toLowerCase().includes(normalizeFilter)
     );
   }
@@ -79,9 +92,15 @@ const App = () => {
       color: "#a83275",
     }}>Contacts:</h2>
 
-    <Filter value={filter} onChange={handleFilterChange}/>
+    <Filter 
+    value={filter} 
+    onChange={handleFilterChange}
+    />
 
-    <ContactList contacts={filteredContacts()} onDeleteContacts={handleDeletedContact}/>
+    <ContactList 
+    contacts={filteredContacts()} 
+    onDeleteContacts={handleDeletedContact}
+    />
 
     </div>
   );
